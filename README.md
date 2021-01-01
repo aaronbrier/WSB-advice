@@ -2,6 +2,7 @@
 A program that gives me financial advice straight from /r/wallstreetbets
 
 Looks at all comments from some number of posts to find the stocks that have the highest sentiment value
+
 Uses PRAW (Reddit API Wrapper) and Textblob for sentiment analysis
 
 Dependencies:
