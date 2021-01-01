@@ -1,23 +1,35 @@
 import re
 from creds import *
+from tickerslist import *
 import praw
 from textblob import TextBlob
+from collections import defaultdict
+
 
 def clean(comment): 
 	#clean comments by removing links, special characters  
 	return ' '.join(re.sub(r"(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", comment).split())
 
-def analyze(all_comments):
-	total = 0
+def analyze(all_comments, tickers):
 	for comment in all_comments:
 		if not isinstance(comment, praw.models.MoreComments):
-			total += TextBlob(clean(comment.body)).sentiment.polarity
-	return total
+			comment = clean(comment.body)
+			word_list = comment.split()
+			for word in word_list:
+				if len(word) <= 6 and word.isupper():
+					tickers[word] += TextBlob(comment).sentiment.polarity
 
-total = 0
-reddit = praw.Reddit(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, user_agent=USER_AGENT)
-for submission in reddit.subreddit("wallstreetbets").hot(limit=10):
-	print(submission.title)
-	all_comments = submission.comments.list()
-	total += analyze(all_comments)
-	print(total)
+def main():
+	reddit = praw.Reddit(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, user_agent=USER_AGENT)
+	tickers = defaultdict(float)
+	for submission in reddit.subreddit("wallstreetbets").hot(limit=10):
+		analyze(submission.comments.list(), tickers)
+	with open("output.txt","w") as file:
+		for count, (ticker, sentiment) in enumerate(sorted(tickers.items(), key = lambda x : x[1], reverse = True)):
+			print(f"{ticker}: {sentiment}")
+			if count < 10:
+				file.write(f"{ticker}: {sentiment}\n")
+
+
+if __name__ == "__main__":
+	main()
