@@ -1,5 +1,6 @@
-# WSB-redditbot
-A Reddit bot that monitors /r/WallStreetBets
+# WSB-advice
+A program that gives me financial advice straight from /r/wallstreetbets
+
 
 Dependencies:
 * pip3 install praw
