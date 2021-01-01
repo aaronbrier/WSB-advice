@@ -6,8 +6,7 @@ from textblob import TextBlob
 from collections import defaultdict
 
 
-def clean(comment): 
-	#clean comments by removing links, special characters  
+def clean(comment):  
 	return ' '.join(re.sub(r"(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", comment).split())
 
 def analyze(all_comments, tickers):
@@ -25,9 +24,9 @@ def main():
 	for submission in reddit.subreddit("wallstreetbets").hot(limit=10):
 		analyze(submission.comments.list(), tickers)
 	with open("output.txt","w") as file:
-		for count, (ticker, sentiment) in enumerate(sorted(tickers.items(), key = lambda x : x[1], reverse = True)):
+		for ticker, sentiment in sorted(tickers.items(), key = lambda x : x[1]):
 			print(f"{ticker}: {sentiment}")
-			if count < 10:
+			if sentiment > 0:
 				file.write(f"{ticker}: {sentiment}\n")
 
 
