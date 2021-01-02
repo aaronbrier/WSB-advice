@@ -5,7 +5,7 @@ import praw
 from textblob import TextBlob
 from collections import defaultdict
 
-POST_LIMIT = 10
+POST_LIMIT = 100
 
 def clean(comment):  
 	return ' '.join(re.sub(r"(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", comment).split())
