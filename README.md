@@ -1,7 +1,7 @@
 # WSB-advice
-A program that gives me financial advice straight from /r/wallstreetbets
+A program that gives me financial advice straight from https://www.reddit.com/r/wallstreetbets/
 
-Looks at all comments from some number of posts to find the stocks that have the highest sentiment value
+Looks at comments from trending posts to find the stocks that have the highest sentiment value. Also looks at stock tickers that have mentions of "buy" nearby
 
 Uses PRAW (Reddit API Wrapper) and Textblob for sentiment analysis
 
